@@ -4,6 +4,8 @@ import { Suspense } from 'react';
 
 import FireEye from './FireEye';
 import Lightning from './Lightning';
+import Sight from './Sight';
+import SightMask from './SightMask';
 function App() {
 	return (
 		<Suspense fallback={null}>
@@ -14,6 +16,8 @@ function App() {
 				<OrbitControls/>
         <FireEye />
         <Lightning />
+        <Sight />
+        <SightMask />
 			</Canvas>
 		</Suspense>
 	);

@@ -1,10 +1,10 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 
-import fragmentShader from './shaders/FireEye/frag.frag';
-import vertexShader from './shaders/FireEye/vert.vert';
+import fragmentShader from './shaders/Sight/frag.frag';
+import vertexShader from './shaders/Sight/vert.vert';
 
-const FireEye = () => {
+const Sight = () => {
   const mesh = useRef();
 
   const uniforms = useMemo(
@@ -20,7 +20,7 @@ const FireEye = () => {
     mesh.current.material.uniforms.uTime.value = 0.4 * clock.getElapsedTime();
   })
 	return (
-		<mesh ref={mesh}>
+		<mesh ref={mesh} position={[0,0,0.015]} scale={[0.35,0.15,1]} rotation={[0,0,Math.PI/2]}>
 			<planeGeometry args={[4, 4, 60, 60]} />
 			<shaderMaterial 
         fragmentShader={fragmentShader} 
@@ -32,4 +32,4 @@ const FireEye = () => {
 	);
 };
 
-export default FireEye;
+export default Sight;

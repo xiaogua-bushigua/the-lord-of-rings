@@ -43,6 +43,17 @@ float sdVesica(vec2 p, float r, float d)
   return ((p.x-b)*d>p.y*b) ? length(p-vec2(b,0.0))
                             : length(p-vec2(0.0,-d))-r;
 }
+float dot2( in vec2 v ) { return dot(v,v); }
+// 眼睛外圈形状，https://www.shadertoy.com/view/NslXDM
+float sdRoundedCross( in vec2 p, in float h )
+{
+  float k = 0.5*(h+1.0/h);
+  p = abs(p);
+  return ( p.x<1.0 && p.y<p.x*(k-h)+h ) ? 
+            k-sqrt(dot2(p-vec2(1,k)))  :
+          sqrt(min(dot2(p-vec2(0,h)),
+                  dot2(p-vec2(1,0))));
+}
 // 外围火焰，https://www.shadertoy.com/view/lsf3RH
 float snoise(vec3 uv, float res)
 {
@@ -79,12 +90,17 @@ void main() {
 
   float color1 = 1. - sdEllipse(uv, vec2(0.5, 0.31), 5.5);
   float color11 = 1. - sdVesica(uv, .65, .45)*5.5;
-  float color2 = sdEllipse(uv, vec2(0.18, 0.03), 1.5)+0.14;
+  float color111 = 1. - sdRoundedCross(uv*1.7, .25)*7.5;
   float color = opUnion(color1, color11);
-  color = opUnion(color, color2)*2.6;
+  color = max(color, color111);
+
+  float color2 = sdEllipse(uv, vec2(0.18, 0.03), 1.5)+0.14;
+  color = opUnion(color, color2)*2.1;
+
+  // color = sqrt(color);
+  color -= 0.1;
 
   vec3 coord = vec3(atan(uv.x, uv.y)/6.2832 + .5, length(uv)*.4, .5);
-
   for(int i = 1; i <= 12; i++)
 	{
 		float power = pow(2.0, float(i));
@@ -92,6 +108,6 @@ void main() {
 	}
 
   gl_FragColor = vec4(color, pow(max(color,0.),2.)*0.4, pow(max(color,0.),3.)*0.15, 1.);
-  // gl_FragColor = vec4(vec3(color2), 1.);
+  // gl_FragColor = vec4(vec3(color), 1.);
 }
 

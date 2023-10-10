@@ -84,7 +84,7 @@ void main() {
   float c = thunderbolt(uv+.06*fbm2(5.*uv));
   c=exp(-4.*c);
   vec3 col;
-  col=clamp(2.*vec3(0.9294, 0.5882, 0.2706)*c,0.,1.);
+  col=clamp(2.*vec3(0.9412, 0.6314, 0.3451)*c,0.,1.);
 
   gl_FragColor = vec4(col, col.r);
 }
