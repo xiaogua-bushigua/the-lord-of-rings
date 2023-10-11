@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
 import fragmentShader from './shaders/FireEye/frag.frag';
 import vertexShader from './shaders/FireEye/vert.vert';
@@ -27,6 +28,7 @@ const FireEye = () => {
         vertexShader={vertexShader} 
         uniforms={uniforms}
         transparent
+        side={THREE.DoubleSide}
       />
 		</mesh>
 	);

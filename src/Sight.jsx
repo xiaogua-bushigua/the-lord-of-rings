@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
 import fragmentShader from './shaders/Sight/frag.frag';
 import vertexShader from './shaders/Sight/vert.vert';

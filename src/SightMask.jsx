@@ -1,5 +1,6 @@
 import fragmentShader from './shaders/SightMask/frag.frag';
 import vertexShader from './shaders/SightMask/vert.vert';
+import * as THREE from 'three';
 
 const SightMask = () => {
 	return (

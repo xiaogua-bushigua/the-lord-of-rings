@@ -29,7 +29,7 @@ vec2 noise2(vec2 x)
 
 float dseg( vec2 ba, vec2 pa )
 {	
-	float h = clamp(dot(pa,ba)/dot(ba,ba), 0., 1.5);	
+	float h = clamp(dot(pa,ba)/dot(ba,ba), 0., 1.1);	
 	return length( pa - ba*h );
 }
 
@@ -37,7 +37,7 @@ float arc(vec2 x,vec2 p, vec2 dir)
 {
   vec2 r = p;
   float d=10.;
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < 8; i++)
   {
       vec2 s= noise2(r+time)+dir;
       d=min(d,dseg(s,x-r));
@@ -84,8 +84,12 @@ void main() {
   float c = thunderbolt(uv+.06*fbm2(5.*uv));
   c=exp(-4.*c);
   vec3 col;
-  col=clamp(2.*vec3(0.9412, 0.6314, 0.3451)*c,0.,1.);
+  col=clamp(2.*vec3(0.9765, 0.5569, 0.3137)*c,0.,1.);
 
-  gl_FragColor = vec4(col, col.r);
+  vec2 p = vUv;
+  p = (p-.5)*2.;
+  float d = 1. - length(p);
+
+  gl_FragColor = vec4(col, min(col.r, d)*0.75);
 }
 
