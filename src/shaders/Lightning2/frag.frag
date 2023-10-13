@@ -90,6 +90,10 @@ void main() {
   p = (p-.5)*2.;
   float d = 1. - length(p);
 
-  gl_FragColor = vec4(col, min(col.r, d)*0.75);
+  float alpha = min(col.r, d)*0.75;
+  float gradual = abs(sin(3.*uTime));
+  alpha *= gradual;
+
+  gl_FragColor = vec4(col, alpha);
 }
 

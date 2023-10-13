@@ -57,17 +57,19 @@ float fbm(vec2 p, int octaveCount)
 
 void main() {
   vec2 uv = vUv;
-  uv = (uv-.5)*2.;
-  uv += 2.0 * fbm(uv+0.8*uTime, 15) - 0.5;
+  uv = (uv-.5)*2.5;
+  uv += 2. * fbm(uv+0.8*uTime, 15) - .5;
     
   float dist = abs(uv.y);
-  vec3 col = vec3(0.9608, 0.5216, 0.2275) * pow(mix(0.0, 0.015, hash11(uTime)) / dist, 1.);
+  vec3 col = vec3(0.9608, 0.6216, 0.3275) * pow(mix(0.0, 0.015, hash11(uTime)) / dist, 1.);
   
   col = pow(col, vec3(1.0));
 
   float d = 1. - length(uv);
+  float alpha = min(d*0.7, col.r)*2.1;
+  float gradual = abs(sin(4.*uTime));
+  alpha *= gradual;
 
-  gl_FragColor = vec4(col, min(d*2.2, col.r)*0.45);
-  // gl_FragColor = vec4(col, col.r);
+  gl_FragColor = vec4(col, alpha);
 }
 

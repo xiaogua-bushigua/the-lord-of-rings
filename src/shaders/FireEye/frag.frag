@@ -107,7 +107,7 @@ void main() {
 		color += (1.5 / power) * snoise(coord + vec3(0.,uTime*.05, -uTime*.05), power*16.);
 	}
 
-  gl_FragColor = vec4(color, pow(max(color,0.),2.)*0.4, pow(max(color,0.),3.)*0.15, 1.);
+  gl_FragColor = vec4(color, pow(max(color,0.),2.)*0.4, pow(max(color,0.),3.)*0.15, color);
   // gl_FragColor = vec4(vec3(color), 1.);
 }
 
