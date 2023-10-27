@@ -1,5 +1,11 @@
 varying vec2 vUv;
 uniform float uTime;
+uniform float uFireDirection;
+uniform float uAmount;
+uniform float uResolution;
+uniform float uFrequency1;
+uniform float uFrequency2;
+uniform float uRed;
 
 // 眼睛内圈形状sdf，https://www.shadertoy.com/view/4sS3zz
 float sdEllipse( in vec2 p, in vec2 ab, float intensity )
@@ -60,6 +66,7 @@ float snoise(vec3 uv, float res)
 	const vec3 s = vec3(1e0, 1e2, 1e3);
 	
 	uv *= res;
+	uv *= 1.5;
 	
 	vec3 uv0 = floor(mod(uv, res))*s;
 	vec3 uv1 = floor(mod(uv+vec3(1.), res))*s;
@@ -71,12 +78,13 @@ float snoise(vec3 uv, float res)
 		      	  uv0.x+uv1.y+uv0.z, uv1.x+uv1.y+uv0.z);
 
 	vec4 r = fract(sin(v*1e-1)*1e3);
+	// vec4 r = fract(sin(v*1e-1)*1e3)+0.15;
 	float r0 = mix(mix(r.x, r.y, f.x), mix(r.z, r.w, f.x), f.y);
 	
 	r = fract(sin((v + uv1.z - uv0.z)*1e-1)*1e3);
 	float r1 = mix(mix(r.x, r.y, f.x), mix(r.z, r.w, f.x), f.y);
 	
-	return mix(r0, r1, f.z)*2.-1.;
+	return mix(r0, r1, f.z)*uAmount-1.;
 }
 
 float opUnion(float d1,float d2)
@@ -97,17 +105,15 @@ void main() {
   float color2 = sdEllipse(uv, vec2(0.18, 0.03), 1.5)+0.14;
   color = opUnion(color, color2)*2.1;
 
-  // color = sqrt(color);
   color -= 0.1;
 
   vec3 coord = vec3(atan(uv.x, uv.y)/6.2832 + .5, length(uv)*.4, .5);
   for(int i = 1; i <= 12; i++)
 	{
 		float power = pow(2.0, float(i));
-		color += (1.5 / power) * snoise(coord + vec3(0.,uTime*.05, -uTime*.05), power*16.);
+		color += (1.2 / power) * snoise(coord*uResolution + vec3(0., uFireDirection*uTime*uFrequency1, -uTime*uFrequency2), power*15.);
 	}
 
-  gl_FragColor = vec4(color, pow(max(color,0.),2.)*0.4, pow(max(color,0.),3.)*0.15, color);
-  // gl_FragColor = vec4(vec3(color), 1.);
+  gl_FragColor = vec4(color*uRed, pow(max(color, 0.), 2.)*0.4, pow(max(color, 0.), 3.)*0.15, color);
 }
 

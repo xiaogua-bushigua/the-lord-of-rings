@@ -1,6 +1,9 @@
 varying vec2 vUv;
 
 uniform float uTime;
+uniform float uStrength;
+uniform float uWave;
+uniform vec3 uColor;
 
 // 闪电：https://www.shadertoy.com/view/MllGRl
 #define time  uTime*5.
@@ -9,14 +12,11 @@ float hash( in vec2 p )
 {
   return fract(sin(p.x*15.32+p.y*35.78) * 43758.23);
 }
-
 vec2 hash2(vec2 p)
 {
 	return vec2(hash(p*.754),hash(1.5743*p.yx+4.5891))-.5;
 }
-
 vec2 add = vec2(1.0, 0.0);
-
 vec2 noise2(vec2 x)
 {
   vec2 p = floor(x);
@@ -26,13 +26,11 @@ vec2 noise2(vec2 x)
   return mix(mix( hash2(p),          hash2(p + add.xy),f.x),
                   mix( hash2(p + add.yx), hash2(p + add.xx),f.x),f.y);  
 }
-
 float dseg( vec2 ba, vec2 pa )
 {	
 	float h = clamp(dot(pa,ba)/dot(ba,ba), 0., 1.1);	
 	return length( pa - ba*h );
 }
-
 float arc(vec2 x,vec2 p, vec2 dir)
 {
   vec2 r = p;
@@ -41,11 +39,10 @@ float arc(vec2 x,vec2 p, vec2 dir)
   {
       vec2 s= noise2(r+time)+dir;
       d=min(d,dseg(s,x-r));
-      r +=s;      
+      r +=s;
   }
   return d*3.;
 }
-
 float thunderbolt(vec2 x)
 {
   vec2 r = vec2(8.,1.);
@@ -64,7 +61,6 @@ float thunderbolt(vec2 x)
   }
   return d;
 }
-
 vec2 fbm2(vec2 x)
 {
   vec2 r = x; 
@@ -81,16 +77,16 @@ void main() {
   uv.x += 0.1;
   uv = 4.*uv*uv.xy;
   uv*=5.;
-  float c = thunderbolt(uv+.06*fbm2(5.*uv));
-  c=exp(-4.*c);
+  float c = thunderbolt(uv+uWave*fbm2(5.*uv));
+  c=exp(-1./uStrength*c);
   vec3 col;
-  col=clamp(2.*vec3(0.9765, 0.5569, 0.3137)*c,0.,1.);
+  col=clamp(2.*uColor*c,0.,1.);
 
   vec2 p = vUv;
   p = (p-.5)*2.;
   float d = 1. - length(p);
 
-  float alpha = min(col.r, d)*0.75;
+  float alpha = min(col.r, d);
   float gradual = abs(sin(3.*uTime));
   alpha *= gradual;
 

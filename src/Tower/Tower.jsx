@@ -6,34 +6,60 @@ Source: https://sketchfab.com/3d-models/wizard-tower-894e9dcdde274c25b46115746c8
 Title: Wizard tower
 */
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { MeshTransmissionMaterial } from '@react-three/drei';
+import { MeshTransmissionMaterial, SpotLight } from '@react-three/drei';
 import { useControls } from 'leva';
+import { SelectiveBloom, EffectComposer } from '@react-three/postprocessing';
+import { BlurPass, Resizer, KernelSize } from 'postprocessing';
+import * as THREE from 'three';
+import { NodeToyMaterial, NodeToyTick } from '@nodetoy/react-nodetoy'
+import { data } from '@/shaders/Ball/shaderData.js';
 
 export default function Tower() {
 	const { nodes, materials } = useGLTF('./wizard_tower.glb');
 
-	const config = useControls({
+	// const config = useControls({
+	// 	backside: false,
+	// 	samples: { value: 16, min: 1, max: 32, step: 1 },
+	// 	resolution: { value: 256, min: 64, max: 2048, step: 64 },
+	// 	transmission: { value: 0.5, min: 0, max: 1 },
+	// 	roughness: { value: 0.12, min: 0, max: 1, step: 0.01 },
+	// 	clearcoat: { value: 1, min: 0, max: 1, step: 0.01 },
+	// 	clearcoatRoughness: { value: 0.3, min: 0, max: 1, step: 0.01 },
+	// 	thickness: { value: 70, min: 0, max: 70, step: 0.01 },
+	// 	backsideThickness: { value: 200, min: 0, max: 200, step: 0.01 },
+	// 	ior: { value: 5, min: 1, max: 5, step: 0.01 },
+	// 	chromaticAberration: { value: 1, min: 0, max: 1 },
+	// 	anisotropy: { value: 1, min: 0, max: 10, step: 0.01 },
+	// 	distortion: { value: 0, min: 0, max: 1, step: 0.01 },
+	// 	distortionScale: { value: 0.2, min: 0.01, max: 1, step: 0.01 },
+	// 	temporalDistortion: { value: 0, min: 0, max: 1, step: 0.01 },
+	// 	attenuationDistance: { value: 4.1, min: 0, max: 10, step: 0.01 },
+	// 	attenuationColor: '#ff0000',
+	// 	color: '#dc2500',
+	// });
+
+	const config = {
 		backside: false,
-		samples: { value: 16, min: 1, max: 32, step: 1 },
-		resolution: { value: 256, min: 64, max: 2048, step: 64 },
-		transmission: { value: 0.5, min: 0, max: 1 },
-		roughness: { value: 0.12, min: 0, max: 1, step: 0.01 },
-		clearcoat: { value: 1, min: 0, max: 1, step: 0.01 },
-		clearcoatRoughness: { value: 0.3, min: 0, max: 1, step: 0.01 },
-		thickness: { value: 70, min: 0, max: 70, step: 0.01 },
-		backsideThickness: { value: 200, min: 0, max: 200, step: 0.01 },
-		ior: { value: 5, min: 1, max: 5, step: 0.01 },
-		chromaticAberration: { value: 1, min: 0, max: 1 },
-		anisotropy: { value: 1, min: 0, max: 10, step: 0.01 },
-		distortion: { value: 0, min: 0, max: 1, step: 0.01 },
-		distortionScale: { value: 0.2, min: 0.01, max: 1, step: 0.01 },
-		temporalDistortion: { value: 0, min: 0, max: 1, step: 0.01 },
-		attenuationDistance: { value: 4.1, min: 0, max: 10, step: 0.01 },
+		samples: 16,
+		resolution:256,
+		transmission: 0.5,
+		roughness: 0.12,
+		clearcoat: 1,
+		clearcoatRoughness: 0.3,
+		thickness: 70,
+		backsideThickness: 200,
+		ior: 5,
+		chromaticAberration: 1,
+		anisotropy: 1,
+		distortion: 0,
+		distortionScale: 0.2,
+		temporalDistortion: 0,
+		attenuationDistance: 4.1,
 		attenuationColor: '#ff0000',
 		color: '#dc2500',
-	});
+	}
 
 	return (
 		<group dispose={null} scale={0.005}>
@@ -60,18 +86,16 @@ export default function Tower() {
 				/>
 				{/* 修权杖：发光球 */}
 				<mesh
+          position={[-0.05, 0.15, -0.4]}
 					castShadow
 					receiveShadow
-					geometry={nodes['Cylinder013_Material_#184_0'].geometry}
+					// geometry={nodes['Cylinder013_Material_#184_0'].geometry}
 					// material={materials.Material_184}
 				>
-					<meshStandardMaterial
-						toneMapped={false}
-						emissive="#77b1ef"
-						color="#32ddc9"
-						emissiveIntensity={10}
-					/>
+          <sphereGeometry />
+					<NodeToyMaterial data={data} />
 				</mesh>
+        <NodeToyTick />
 			</group>
 			<group position={[0.633, 270.376, 28.607]} rotation={[-3.134, 0, 0.009]}>
 				<mesh
@@ -81,19 +105,14 @@ export default function Tower() {
 					material={materials.Material_59}
 				/>
 				{/* 修V灯 */}
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes['Plane002_Material_#62_0'].geometry}
-          // material={materials.Material_62}
-        >
-          <meshStandardMaterial
-            toneMapped={false}
-            emissive="#f85151"
-            color="#dd3232"
-            emissiveIntensity={10}
-          />
-        </mesh>
+				<mesh
+					castShadow
+					receiveShadow
+					geometry={nodes['Plane002_Material_#62_0'].geometry}
+					// material={materials.Material_62}
+				>
+					<meshBasicMaterial color="#ff6262" />
+				</mesh>
 			</group>
 			<group position={[-0.001, 279.124, -9.658]} rotation={[-Math.PI / 2, 0, -0.017]}>
 				<mesh
@@ -117,12 +136,7 @@ export default function Tower() {
 					geometry={nodes['Sphere037_Material_#61_0'].geometry}
 					// material={materials.Material_61}
 				>
-					<meshStandardMaterial
-						toneMapped={false}
-						emissive="#77b1ef"
-						color="#32ddc9"
-						emissiveIntensity={2.5}
-					/>
+					<meshBasicMaterial color="#4ff7e3" />
 				</mesh>
 				<mesh
 					castShadow
@@ -1408,7 +1422,7 @@ export default function Tower() {
 				position={[-7.64, 115.895, 33.832]}
 				rotation={[0.075, 0, 0]}
 			/>
-			<mesh
+			{/* <mesh
 				castShadow
 				receiveShadow
 				geometry={nodes['Cylinder016_Material_#230_0'].geometry}
@@ -2271,7 +2285,7 @@ export default function Tower() {
 				material={materials.Material_230}
 				position={[-20.96, 244.359, 66.23]}
 				rotation={[-2.569, 0.357, 2.274]}
-			/>
+			/> */}
 		</group>
 	);
 }

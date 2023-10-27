@@ -1,5 +1,11 @@
 varying vec2 vUv;
 uniform float uTime;
+uniform float uColor;
+uniform float uPower;
+uniform float uResolution;
+uniform float uWave;
+uniform float uDirection;
+uniform float uFrequency;
 
 // 眼睛瞳孔，https://www.shadertoy.com/view/XtVfRW
 float sdVesica(vec2 p, float r, float d)
@@ -48,14 +54,13 @@ void main() {
   float color2 = 1. - sdVesica(uv, .55, .35)*5.5;
   float color = 1. - opSubtraction(color1, color2);
 
-  vec3 coord = vec3(atan(uv.x, uv.y)/6.2832 + .5, length(uv)*.4, .5);
+  vec3 coord = vec3(atan(uv.x, uv.y)/uWave + .5, length(uv)*.4, .5);
   for(int i = 1; i <= 12; i++)
 	{
 		float power = pow(2.0, float(i));
-		color += (1.5 / power) * snoise(coord + vec3(0.,uTime*.05, -uTime*.05), power*16.);
+		color += (uPower / power) * snoise(coord + vec3(0., uDirection*uTime*uFrequency, -uTime*.05), power*uResolution);
 	}
 
-  gl_FragColor = vec4(color, pow(max(color,0.),2.)*0.4, pow(max(color,0.),3.)*0.15, color);
-  // gl_FragColor = vec4(vec3(color), 1.);
+  gl_FragColor = vec4(color, pow(max(color,0.),2.)*uColor, pow(max(color,0.),3.)*0.15, color);
 }
 

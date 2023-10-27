@@ -7,7 +7,7 @@ import SightMask from './SightMask';
 
 const SauronEye = () => {
 	return (
-		<group position={[0, 2.22, 0]} scale={0.25}>
+		<group position={[0, 2.27, 0]} scale={0.25}>
 			<FireEye />
 			<Lightning />
 			<Sight />
