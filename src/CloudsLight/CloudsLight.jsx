@@ -58,7 +58,7 @@ const CloudsLight = () => {
 			/>
       <Cloud
         scale={0.12}
-        position={[-6, -2, -2.3]}
+        position={[-5, -2, -2.3]}
         bounds={[4, 5, 4]}
         texture={cloud}
 				seed={16}

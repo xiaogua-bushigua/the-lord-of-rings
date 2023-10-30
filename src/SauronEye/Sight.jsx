@@ -9,6 +9,7 @@ const Sight = () => {
   const mesh = useRef();
 	const [clicked, setClicked] = useState(false);
 	const [YScale, setYScale] = useState([0.35,0.15,1]);
+  const [clickedTime, setClickedTime] = useState(0)
 
   const uniforms = useMemo(
     () => ({
@@ -32,6 +33,9 @@ const Sight = () => {
       },
       uFrequency: {
         value: 0.05
+      },
+      uAlpha: {
+        value: 1
       }
     }), []
   );
@@ -39,20 +43,28 @@ const Sight = () => {
   useEffect(() => {
 		PubSub.subscribe('clickFire', (msg, params) => {
 			setClicked(params.status);
+			setClickedTime(params.time);
 		});
 	}, []);
 
   useFrame((state) => {
     const { clock } = state;
-    mesh.current.material.uniforms.uTime.value = 0.4 * clock.getElapsedTime();
+    const time = clock.getElapsedTime();
+    mesh.current.material.uniforms.uTime.value = 0.4 * time;
     if (clicked) {
-			setYScale([0.42,0.35,1]);
-      mesh.current.material.uniforms.uColor.value = 0.55
-      mesh.current.material.uniforms.uPower.value = 2.0
-      mesh.current.material.uniforms.uResolution.value = 24
-      mesh.current.material.uniforms.uWave.value = 3.2832
-      mesh.current.material.uniforms.uDirection.value = -1
-      mesh.current.material.uniforms.uFrequency.value = 0.15
+      if(time < clickedTime + 1.5) {
+        setYScale([0.35, -(time-clickedTime)/15+0.15, 1]);
+        mesh.current.material.uniforms.uAlpha.value = -(time-clickedTime)/1.5+1
+      } else {
+        setYScale([0.42,0.35,1]);
+        mesh.current.material.uniforms.uAlpha.value = 1.0
+        mesh.current.material.uniforms.uColor.value = 0.55
+        mesh.current.material.uniforms.uPower.value = 2.0
+        mesh.current.material.uniforms.uResolution.value = 24
+        mesh.current.material.uniforms.uWave.value = 3.2832
+        mesh.current.material.uniforms.uDirection.value = -1
+        mesh.current.material.uniforms.uFrequency.value = 0.15
+      }
 		}
   })
 	return (

@@ -6,6 +6,7 @@ uniform float uResolution;
 uniform float uWave;
 uniform float uDirection;
 uniform float uFrequency;
+uniform float uAlpha;
 
 // 眼睛瞳孔，https://www.shadertoy.com/view/XtVfRW
 float sdVesica(vec2 p, float r, float d)
@@ -61,6 +62,6 @@ void main() {
 		color += (uPower / power) * snoise(coord + vec3(0., uDirection*uTime*uFrequency, -uTime*.05), power*uResolution);
 	}
 
-  gl_FragColor = vec4(color, pow(max(color,0.),2.)*uColor, pow(max(color,0.),3.)*0.15, color);
+  gl_FragColor = vec4(color, pow(max(color,0.),2.)*uColor, pow(max(color,0.),3.)*0.15, color*uAlpha);
 }
 

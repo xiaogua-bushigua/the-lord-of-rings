@@ -3,7 +3,7 @@ import { Sparkles } from '@react-three/drei';
 const SparksBottom = () => {
 	return (
 		<>
-			<object3D position={[-6, -2, -2]}>
+			<object3D position={[-5, -2.3, -2]}>
 				<Sparkles count={12} scale={[0.5, 1, 0.5]} color={'#c74337'} size={3} speed={0.3} noise={0.3} />
 			</object3D>
 			<object3D position={[4, -1.25, -2]}>

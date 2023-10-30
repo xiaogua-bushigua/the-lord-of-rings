@@ -5,7 +5,7 @@ const Island = () => {
 	const { nodes, materials } = useGLTF('./floating_island_oculuskitbashchallenge.glb');
 	let pos = [
 		{model: { position: [3.5, 1, -3], scale: 0.008, rotation: [-2.361, 0.105, 1.2] }, float: {speed: 1, rotationIntensity: 1.6}},
-		{model: { position: [-6, -1, -3], scale: 0.006, rotation: [-1.761, 0.855, 0] }, float: {speed: 1.5, rotationIntensity: 2}},
+		{model: { position: [-5, -1, -3], scale: 0.006, rotation: [-1.761, 0.855, 0] }, float: {speed: 1.5, rotationIntensity: 2}},
 	];
 
 	return (

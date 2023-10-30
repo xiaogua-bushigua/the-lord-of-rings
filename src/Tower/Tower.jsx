@@ -68,14 +68,18 @@ export default function Tower() {
 					castShadow
 					receiveShadow
 					geometry={nodes['Object001_Material_#182_0'].geometry}
-					material={materials.Material_182}
-				/>
+					// material={materials.Material_182}
+				>
+          <meshPhysicalMaterial color={'#363636'} roughness={1} metalness={0.2} />
+        </mesh>
 				<mesh
 					castShadow
 					receiveShadow
 					geometry={nodes['Object001_Material_#182_0_1'].geometry}
-					material={materials.Material_182}
-				/>
+					// material={materials.Material_182}
+				>
+          <meshPhysicalMaterial color={'#363636'} roughness={1} metalness={0.2} />
+        </mesh>
 			</group>
 			<group position={[3.934, 102.639, 62.756]} rotation={[-2.673, 1.46, 1.279]}>
 				<mesh

@@ -9,16 +9,24 @@ const SightMask = () => {
   const mesh = useRef();
 	const [clicked, setClicked] = useState(false);
 	const [YScale, setYScale] = useState([0.35,0.25,1]);
+  const [clickedTime, setClickedTime] = useState(0)
 
   useEffect(() => {
 		PubSub.subscribe('clickFire', (msg, params) => {
 			setClicked(params.status);
+      setClickedTime(params.time);
 		});
 	}, []);
 
-  useFrame(() => {
+  useFrame((state) => {
+    const { clock } = state;
+    const time = clock.getElapsedTime();
 		if (clicked) {
-			setYScale([0.45,0.58,1]);
+      if(time < clickedTime + 1.5) {
+        setYScale([0.35, -(time-clickedTime)/15+0.25, 1]);
+      } else {
+			  setYScale([0.45,0.58,1]);
+      }
 		}
 	});
 

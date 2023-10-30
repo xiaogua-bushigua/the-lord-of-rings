@@ -9,7 +9,10 @@ import vertexShader from '@/shaders/FireEye/vert.vert';
 const FireEye = () => {
   const mesh = useRef();
   const [clicked, setClicked] = useState(false)
+  const [clickedTime, setClickedTime] = useState(0)
   const [eyeScale, setEyeScale] = useState(1.0)
+
+  const [ctime, setctime] = useState(0)
 
   const uniforms = useMemo(
     () => ({
@@ -39,23 +42,31 @@ const FireEye = () => {
 
   useFrame((state) => {
     const { clock } = state;
-    mesh.current.material.uniforms.uTime.value = 0.4 * clock.getElapsedTime();
+    const time = clock.getElapsedTime();
+    setClickedTime(time);
+    mesh.current.material.uniforms.uTime.value = 0.4 * time;
     if(clicked) {
-      mesh.current.material.uniforms.uFireDirection.value = -1.0
-      mesh.current.material.uniforms.uAmount.value = 2.5
-      mesh.current.material.uniforms.uResolution.value = 1.3
-      mesh.current.material.uniforms.uFrequency1.value = 0.2
-      mesh.current.material.uniforms.uFrequency2.value = 0.01
-      mesh.current.material.uniforms.uRed.value = 1.5
-      setEyeScale(1.3)
+      if(time > ctime+1.5) {
+        mesh.current.material.uniforms.uFireDirection.value = -1.0
+        mesh.current.material.uniforms.uAmount.value = 2.5
+        mesh.current.material.uniforms.uResolution.value = 1.3
+        mesh.current.material.uniforms.uFrequency1.value = 0.2
+        mesh.current.material.uniforms.uFrequency2.value = 0.01
+        mesh.current.material.uniforms.uRed.value = 1.5
+        setEyeScale(1.3)
+      }
     }
   })
 
   const handleClickFire = () => {
     setClicked(true)
-    PubSub.publish('clickFire',{
-      status: true
-    })
+    setctime(clickedTime)
+    if(eyeScale === 1.0) {
+      PubSub.publish('clickFire',{
+        status: true,
+        time: clickedTime
+      })
+    }
   }
 	return (
 		<mesh ref={mesh} onClick={handleClickFire} scale={eyeScale}>
