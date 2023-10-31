@@ -29,17 +29,24 @@ const Scene = () => {
 
 	useFrame((state) => {
 		const camera = state.camera;
-		const time = state.clock.getElapsedTime();
-		console.log(scroll.offset);
 
-		if (scroll.offset < 0.2) {
-			camera.position.lerp(new THREE.Vector3(0.8, 0.35, 0.5), 0.01);
+    let o = scroll.offset;
+    const pi = Math.PI;
+
+    if(o < 0.8) {
+      const x = (o+4*Math.sqrt(o)+1.2)*Math.cos(o*pi*2.5*1.25)-0.2
+      const z = (o+4*Math.sqrt(o))*Math.sin(o*pi*2.5*1.25)+0.6
+      const y = (o)*o+0.4
+      camera.position.set(x, y, z)
+    } else if (o > 0.9) {
+      camera.position.lerp(new THREE.Vector3(0.2, 1.8, 1.4), 0.01);
+      camera.lookAt(0.2, 1.8, 0);
 			camera.updateProjectionMatrix();
-		}
+    }
 	});
 
 	return (
-		<group position={[0.5, -0.25, 0]}>
+		<group position={[0.25, -0.25, 0]}>
 			<directionalLight intensity={5} color={'#fe6f6f'} position={[-1, 0, 0]} />
 			<ambientLight intensity={1} />
 			<OrbitControls enableZoom={false} />
@@ -60,8 +67,8 @@ function App() {
 	return (
 		<Suspense fallback={null}>
 			{/* <Canvas camera={{ position: [0, 1.5, 6], fov: 50 }} gl={{ sortObjects: true }}> */}
-			<Canvas camera={{ position: [0, 1.5, 6], fov: 50 }}>
-				<ScrollControls damping={0.2} maxSpeed={0.5} pages={2}>
+			<Canvas camera={{ position: [0, 0, 0], fov: 50 }}>
+				<ScrollControls damping={0.1} maxSpeed={0.05} pages={1}>
 					<Scene />
 				</ScrollControls>
 			</Canvas>
