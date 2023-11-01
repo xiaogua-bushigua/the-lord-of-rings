@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 
-export default function Dragon(props) {
+export default function Dragon({scroll}) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF(
     "./demon_dragon_full_texture.glb"
@@ -12,8 +13,13 @@ export default function Dragon(props) {
     const flying = actions['flying_skeletal.3'];
     flying.reset().setEffectiveTimeScale(2.5).fadeIn(0.5).play();
   }, [])
+
+  useFrame(() => {
+    console.log(scroll.offset);
+  })
+
   return (
-    <group ref={group} {...props} scale={0.7} position={[0,0.5,2]} dispose={null}>
+    <group ref={group} scale={0.7} position={[0,0.5,2]} dispose={null}>
       <group name="Sketchfab_Scene">
         <group
           name="Sketchfab_model"
