@@ -65,8 +65,8 @@ const Fire = () => {
 				fragmentShader={fragmentShader}
 				vertexShader={vertexShader}
 				transparent
-        alphaTest={false}
-        depthWrite={false}
+				alphaTest={false}
+				depthWrite={false}
 				uniforms={uniforms}
 				side={THREE.DoubleSide}
 			/>

@@ -54,5 +54,6 @@ void main() {
     col += samplerFire(lp, noiseScale);
   }
   col.a = col.r;
+  col.r *= 1.2;
   gl_FragColor = col;
 }
