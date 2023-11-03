@@ -4,7 +4,7 @@ import { MeshTransmissionMaterial } from '@react-three/drei';
 import { NodeToyMaterial, NodeToyTick } from '@nodetoy/react-nodetoy';
 import { data } from '@/shaders/Ball/shaderData.js';
 
-export default function Tower() {
+const Tower = () => {
 	const { nodes, materials } = useGLTF('./wizard_tower.glb');
 
 	const config = {
@@ -2234,4 +2234,4 @@ export default function Tower() {
 	);
 }
 
-useGLTF.preload('./wizard_tower.glb');
+export default Tower;

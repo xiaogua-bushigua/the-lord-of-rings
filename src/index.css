@@ -8,6 +8,10 @@
   height: 100vh;
 }
 
+body {
+  font-family: 'Bradley Hand ITC';
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

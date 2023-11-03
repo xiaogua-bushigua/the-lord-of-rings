@@ -16,7 +16,7 @@ const CloudsLight = () => {
 
 	return (
 		<Clouds material={THREE.MeshLambertMaterial} limit={800}>
-			<Cloud
+			{/* <Cloud
 				scale={0.15}
 				position={[0, 1, 0]}
 				bounds={[5, 2, 2]}
@@ -57,7 +57,7 @@ const CloudsLight = () => {
 				volume={4.6}
 				fade={58}
 				color="white"
-			/>
+			/> */}
 			<pointLight ref={light} color="blue" />
 		</Clouds>
 	);

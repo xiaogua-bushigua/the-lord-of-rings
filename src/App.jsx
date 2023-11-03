@@ -10,6 +10,8 @@ import Island from './Island/Island';
 import Sparkles from './Sparks/Sparkles';
 import Fire from './Fire/Fire';
 
+import Loading from './Loading';
+
 const Scene = () => {
 	const scroll = useScroll();
 
@@ -37,7 +39,7 @@ const Scene = () => {
 			camera.position.set(x1, y1, z1);
 			camera.lookAt(o - 0.8, 9 * o - 7.2, 0);
 		}
-    camera.updateProjectionMatrix();
+		camera.updateProjectionMatrix();
 	});
 
 	return (
@@ -59,13 +61,13 @@ const Scene = () => {
 
 function App() {
 	return (
-		<Suspense fallback={null}>
-			<Canvas camera={{ position: [0, 0, 0], fov: 60 }}>
+		<Canvas camera={{ position: [0, 0, 0], fov: 60 }}>
+			<Suspense fallback={<Loading />}>
 				<ScrollControls maxSpeed={0.05} pages={1}>
 					<Scene />
 				</ScrollControls>
-			</Canvas>
-		</Suspense>
+			</Suspense>
+		</Canvas>
 	);
 }
 

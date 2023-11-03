@@ -8,7 +8,7 @@ const gety = (x1, y1, x2, y2) => {
 	return [k, b];
 };
 
-export default function Dragon({ scroll }) {
+const Dragon = ({ scroll }) => {
 	const group = useRef();
 	const { nodes, materials, animations } = useGLTF('./demon_dragon_full_texture.glb');
 	const { actions } = useAnimations(animations, group);
@@ -71,4 +71,4 @@ export default function Dragon({ scroll }) {
 	);
 }
 
-useGLTF.preload('./demon_dragon_full_texture.glb');
+export default Dragon;
