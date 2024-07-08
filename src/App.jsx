@@ -61,13 +61,28 @@ const Scene = () => {
 
 function App() {
 	return (
-		<Canvas camera={{ position: [0, 0, 0], fov: 60 }}>
-			<Suspense fallback={<Loading />}>
-				<ScrollControls maxSpeed={0.05} pages={1}>
-					<Scene />
-				</ScrollControls>
-			</Suspense>
-		</Canvas>
+		<>
+			<div
+				style={{
+					position: 'absolute',
+					top: '10px',
+					left: '10px',
+					color: 'white',
+					zIndex: 1,
+					pointerEvents: 'none',
+					fontSize: '24px',
+				}}
+			>
+				Scroll the mouse and finally click on the eye
+			</div>
+			<Canvas camera={{ position: [0, 0, 0], fov: 60 }}>
+				<Suspense fallback={<Loading />}>
+					<ScrollControls maxSpeed={0.05} pages={1}>
+						<Scene />
+					</ScrollControls>
+				</Suspense>
+			</Canvas>
+		</>
 	);
 }
 
