@@ -66,14 +66,19 @@ function App() {
 				style={{
 					position: 'absolute',
 					top: '10px',
-					left: '10px',
-					color: 'white',
 					zIndex: 1,
-					pointerEvents: 'none',
-					fontSize: '24px',
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					width: '100%',
+					padding: '0 20px',
+					boxSizing: 'border-box',
 				}}
 			>
-				Scroll the mouse and finally click on the eye
+				<h1 style={{ fontSize: '28px', color: 'white' }}>Scroll the mouse and finally click on the eye</h1>
+				<a href="https://github.com/xiaogua-bushigua/the-lord-of-rings" target="_blank">
+					<img src="./github.png" style={{ width: '48px', height: '48px' }} />
+				</a>
 			</div>
 			<Canvas camera={{ position: [0, 0, 0], fov: 60 }}>
 				<Suspense fallback={<Loading />}>
