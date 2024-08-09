@@ -24,7 +24,7 @@ const Loading = () => {
 					fontWeight: '600',
 				}}
 			>
-				<span>{progress}</span>
+				<span>{progress+"%"}</span>
 				<div
 					style={{
 						height: '10px',
