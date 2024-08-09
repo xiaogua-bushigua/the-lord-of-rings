@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 
 const Loading = () => {
 	const { progress } = useProgress();
-	const [padding, setPadding] = useState(window.innerWidth);
+	const [padding, setPadding] = useState(window.innerWidth * 2.0);
 
 	useEffect(() => {
-		setPadding((1 - progress / 100) * window.innerWidth);
+		setPadding((1 - progress / 100) * window.innerWidth * 2.0);
 	}, [progress]);
 	return (
 		<Html>

@@ -75,7 +75,9 @@ function App() {
 					boxSizing: 'border-box',
 				}}
 			>
-				<h1 style={{ fontSize: '28px', color: 'white' }}>Scroll the mouse and finally click on the eye</h1>
+				<h1 style={{ fontSize: '28px', color: 'white' }}>
+					Scroll with the mouse and then click on the eye pattern
+				</h1>
 				<a href="https://github.com/xiaogua-bushigua/the-lord-of-rings" target="_blank">
 					<img src="./github.png" style={{ width: '48px', height: '48px' }} />
 				</a>
